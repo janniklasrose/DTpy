@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 def eigenDecomposition(tensor):
     """
@@ -45,6 +46,42 @@ class DiffusionTensor:
         eVal, eVec = eigenDecomposition(tensor)
 
         # store
-        self.fullTensor = tensor
-        self.eigenValues = eVal
-        self.eigenVectors = eVec
+        self._fullTensor = tensor
+        self._eigenValues = eVal
+        self._eigenVectors = eVec
+
+    @property
+    def fullTensor(self):
+        return self._fullTensor
+
+    @property
+    def eigenValues(self):
+        return self._eigenValues
+
+    @property
+    def eigenVectors(self):
+        return self._eigenVectors
+
+    @property
+    def L1(self):
+        return self.eigenValues[0]
+
+    @property
+    def L2(self):
+        return self.eigenValues[1]
+
+    @property
+    def L3(self):
+        return self.eigenValues[2]
+
+    @property
+    def E1(self):
+        return self.eigenVectors[:, 0]  # first column
+
+    @property
+    def E2(self):
+        return self.eigenVectors[:, 1]  # second column
+
+    @property
+    def E3(self):
+        return self.eigenVectors[:, 2]  # third column
