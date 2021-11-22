@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from functools import cached_property
+from typing import Any, Union
 
 import numpy as np
 
@@ -10,18 +11,23 @@ class Vector3:
     y: float
     z: float
 
+    def __iter__(self):
+        yield self.x
+        yield self.y
+        yield self.z
 
-@dataclass
+    def dot(self, other: "Vector3") -> float:
+        return sum(a * b for a, b in zip(self, other))
+
+
 class Tensor3:
     """A 3x3 tensor."""
-    tensor: np.ndarray  # size: (3, 3)
 
-    def __post_init__(self):
+    def __init__(self, tensor: Union[np.ndarray, list[float], Any]) -> None:
         """Ensure that data is in the correct format.
         This allows the user to provide either the 3x3 tensor
-        or to input a 6-element list of coefficients.
-        """
-        self.tensor = np.reshape(self.tensor, (3, 3))  # throws if bad input
+        or to input a 9-element list of coefficients."""
+        self.tensor = np.reshape(tensor, (3, 3))  # throws if bad input
 
     @cached_property
     def _eigendecomposition(self):
