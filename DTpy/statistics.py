@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import sqrt, acos
 from statistics import mean, median, stdev, variance
 from typing import Any
@@ -35,7 +35,7 @@ class DataAnalysis(ABC):
 
 @dataclass
 class ScalarAnalysis(DataAnalysis):
-    data: list[float]
+    data: list[float] = field(default_factory=list)
     _min_data = 2
 
     @property
@@ -94,7 +94,7 @@ class ScalarAnalysis(DataAnalysis):
 
 @dataclass
 class VectorAnalysis(DataAnalysis):
-    data: list[Vector3]
+    data: list[Vector3] = field(default_factory=list)
     _min_data = 2
 
     @property
