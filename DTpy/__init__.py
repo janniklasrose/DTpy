@@ -1,1 +1,1 @@
-from .DiffusionTensor import DiffusionTensor
+from .diffusion_tensor import DiffusionTensor
