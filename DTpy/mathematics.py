@@ -19,6 +19,14 @@ class Vector3:
     def dot(self, other: "Vector3") -> float:
         return sum(a * b for a, b in zip(self, other))
 
+    def to_tuple(self) -> tuple[float, float, float]:
+        """Convert data to a tuple."""
+        return self.x, self.y, self.z
+
+    def to_numpy(self):
+        """Convert data to a numpy array."""
+        return np.array(self.to_tuple())
+
 
 class Tensor3:
     """A 3x3 tensor."""
