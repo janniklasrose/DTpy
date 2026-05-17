@@ -3,6 +3,7 @@ from functools import cached_property
 from typing import Any, Union
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 
 @dataclass
@@ -23,10 +24,21 @@ class Vector3:
 class Tensor3:
     """A 3x3 tensor."""
 
-    def __init__(self, tensor: Union[np.ndarray, list[float], Any]) -> None:
+    def __init__(self, tensor: Union[list[float], ArrayLike]) -> None:
         """Ensure that data is in the correct format.
-        This allows the user to provide either the 3x3 tensor
-        or to input a 9-element list of coefficients."""
+        This allows the user to provide either the 3x3 tensor or to input a
+        9-element list of coefficients. Alternatively, if a 6-element list is
+        provided, a symmetric tensor is assumed. In that case, the elements
+        should be:
+            tensor = [xx, xy, xz, yy, yz, zz]
+        """
+        if np.size(tensor) == 6:
+            # assume symmetric tensor
+            tmp = np.empty((3, 3))
+            tmp[np.triu_indices(3)] = tensor  # includes main diagonal
+            tmp[np.tril_indices(3, -1)] = tmp[np.triu_indices(3, +1)]
+            tensor = tmp  # overwrite
+
         self.tensor = np.reshape(tensor, (3, 3))  # throws if bad input
 
     @cached_property
