@@ -1,4 +1,4 @@
-from math import sqrt
+from math import prod, sqrt
 
 from .mathematics import Tensor3, Vector3
 
@@ -55,7 +55,37 @@ class DiffusionTensor(Tensor3):
         """
         return self.EigenVectors[2]
 
+    @property
+    def Moment1(self) -> float:
+        """First moment of the eigenvalues."""
+        return self.MD
+
+    @property
+    def Moment2(self) -> float:
+        """Second central moment of the eigenvalues."""
+        return sum((x - self.Moment1)**2 for x in self.EigenValues) / 3
+
+    @property
+    def Moment3(self) -> float:
+        """Third central moment of the eigenvalues."""
+        return sum((x - self.Moment1)**3 for x in self.EigenValues) / 3
+
     # Tensor size and shape parameters
+    # https://en.wikipedia.org/wiki/Diffusion_MRI#Measures_of_anisotropy_and_diffusivity
+
+    @property
+    def AxialDiffusivity(self) -> float:
+        """Axial diffusivity.
+        Equivalent to the primary eigenvalue.
+        """
+        return self.L1
+
+    @property
+    def RadialDiffusivity(self) -> float:
+        """Radial diffusivity.
+        Average of the secondary and tertiary eigenvalues.
+        """
+        return (self.L2 + self.L3)/2
 
     @property
     def MD(self) -> float:
@@ -68,13 +98,61 @@ class DiffusionTensor(Tensor3):
     def FA(self) -> float:
         """Fractional anisotropy."""
         scale = 3 / 2
-        numerator = sum((x - self.MD)**2 for x in self.EigenValues)
+        numerator = 3 * self.Moment2
         denominator = sum(x**2 for x in self.EigenValues)
         return sqrt(scale * numerator / denominator)
 
     @property
     def Mo(self) -> float:
         """Tensor mode."""
-        moment2 = sum((x - self.MD)**2 for x in self.EigenValues)/3
-        moment3 = sum((x - self.MD)**3 for x in self.EigenValues)/3
-        return sqrt(2) * moment3 * moment2**(-3/2)
+        return sqrt(2) * self.Sk
+
+    @property
+    def Sk(self) -> float:
+        """Skewness."""
+        return self.Moment3 * self.Moment2**(-3/2)
+
+    @property
+    def RA(self) -> float:
+        """Relative Anisotropy."""
+        sum_terms = sum((x - self.MD)**2 for x in self.EigenValues)
+        return sqrt(sum_terms) / (sqrt(3) * self.MD)
+
+    @property
+    def VR(self) -> float:
+        """Volume ratio."""
+        return prod(self.EigenValues) / self.MD**3
+
+    @property
+    def C_l(self) -> float:
+        """
+        Linear case.
+        L1 >> L2 ~ L3
+        """
+        return (self.L1 - self.L2) / self.Trace
+
+    @property
+    def C_p(self) -> float:
+        """
+        Planar case.
+        L1 ~ L2 >> L3
+        """
+        return 2 * (self.L2 - self.L3) / self.Trace
+
+    @property
+    def C_s(self) -> float:
+        """
+        Spherical case.
+        L1 ~ L2 ~ L3
+
+        == self.L3/self.MD
+        """
+        return 3 * self.L3 / self.Trace
+
+    @property
+    def C_a(self) -> float:
+        """
+        Anisotropy measure.
+        C_a = C_l + C_p = 1 - C_s = (L1 + L2 - 2*L3)/(L1 + L2 + L3)
+        """
+        return 1 - self.C_s
