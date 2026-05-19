@@ -59,7 +59,7 @@ class Tensor3:
         See <https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix>
         """
         eVal, eVec = np.linalg.eig(self.tensor)
-        # the output of linalg.eig is not guaranteed to be sorted
+        # the output of linalg.eig is not guaranteed to be sorted, so we sort it here by eigenvalue
         descending = np.argsort(-eVal, kind="stable")
         eVal = eVal[descending]
         eVec = eVec[:, descending]  # columns are vectors
