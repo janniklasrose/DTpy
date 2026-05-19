@@ -29,7 +29,7 @@ class B_Tensor(Tensor3):
             dir.y * dir.z * 2,
             dir.z * dir.z,
         ]) * bvalue
-        return super()(tensor)
+        return cls(tensor)
 
 
 def calculate_diffusion_tensor(signal_ratios: Union[list[float], NDArray], b_tensors: list[B_Tensor]) -> DiffusionTensor:
