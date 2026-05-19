@@ -60,8 +60,7 @@ class Tensor3:
         """
         eVal, eVec = np.linalg.eig(self.tensor)
         # the output of linalg.eig is not guaranteed to be sorted
-        ascending = np.argsort(eVal)
-        descending = ascending[::-1]
+        descending = np.argsort(-eVal, kind="stable")
         eVal = eVal[descending]
         eVec = eVec[:, descending]  # columns are vectors
         return eVal, eVec
