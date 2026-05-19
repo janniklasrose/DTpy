@@ -92,3 +92,7 @@ class Tensor3:
         E2: Vector3 = Vector3(*vectors[:, 1])
         E3: Vector3 = Vector3(*vectors[:, 2])
         return E1, E2, E3
+
+    @property
+    def Trace(self) -> float:
+        return sum(self.EigenValues)
