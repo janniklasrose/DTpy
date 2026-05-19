@@ -1,8 +1,6 @@
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from math import sqrt, acos
 from statistics import mean, median, stdev, variance
-from typing import Any
 
 from .mathematics import Vector3, Tensor3
 
@@ -14,13 +12,8 @@ class TooFewDataPoints(Exception):
         )
 
 
-class DataAnalysis(ABC):
+class DataAnalysis:
     _min_data = 1
-
-    @property
-    @abstractmethod
-    def data(self) -> list[Any]:
-        raise NotImplementedError
 
     @property
     def N(self) -> int:
