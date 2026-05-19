@@ -41,7 +41,7 @@ def calculate_diffusion_tensor(signal_ratios: Union[list[float], NDArray], b_ten
         b_matrix[i, :] = b_tensor.tensor[row, col]
     attenuation_vector = np.log(signal_ratios)
     # least squares solution
-    coefficients = -np.linalg.lstsq(b_matrix, attenuation_vector)
+    coefficients = -np.linalg.lstsq(b_matrix, attenuation_vector, rcond=None)[0]
     # assign output
     tensor = np.zeros((3, 3))
     tensor[row, col] = tensor[col, row] = coefficients  # use symmetry
