@@ -39,6 +39,39 @@ class DiffusionTensorTest(unittest.TestCase):
         self.assertAlmostEqual(dt.FA, math.sqrt(3 / 14))
         self.assertEqual(dt.Mo, 0)
 
+    def test_eigenvalue_moments(self):
+        dt = DiffusionTensor([[3, 0, 0], [0, 2, 0], [0, 0, 1]])
+
+        self.assertEqual(dt.Moment1, 2)
+        self.assertAlmostEqual(dt.Moment2, 2 / 3)
+        self.assertEqual(dt.Moment3, 0)
+
+    def test_diffusivity_metrics(self):
+        dt = DiffusionTensor([[3, 0, 0], [0, 2, 0], [0, 0, 1]])
+
+        self.assertEqual(dt.Trace, 6)
+        self.assertEqual(dt.AxialDiffusivity, 3)
+        self.assertEqual(dt.RadialDiffusivity, 1.5)
+
+    def test_anisotropy_metrics(self):
+        dt = DiffusionTensor([[3, 0, 0], [0, 2, 0], [0, 0, 1]])
+
+        self.assertAlmostEqual(dt.RA, math.sqrt(1 / 6))
+        self.assertEqual(dt.VR, 0.75)
+        self.assertEqual(dt.Sk, 0)
+        self.assertEqual(dt.Mo, 0)
+
+    def test_shape_coefficients(self):
+        dt = DiffusionTensor([[3, 0, 0], [0, 2, 0], [0, 0, 1]])
+
+        self.assertAlmostEqual(dt.C_l, 1 / 6)
+        self.assertAlmostEqual(dt.C_p, 1 / 3)
+        self.assertAlmostEqual(dt.C_s, 1 / 2)
+        self.assertAlmostEqual(dt.C_a, 1 / 2)
+        self.assertAlmostEqual(dt.C_l + dt.C_p + dt.C_s, 1)
+        self.assertAlmostEqual(dt.C_a, dt.C_l + dt.C_p)
+        self.assertAlmostEqual(dt.C_a, 1 - dt.C_s)
+
     def test_accepts_flat_tensor_coefficients(self):
         dt = DiffusionTensor([1, 0, 0, 0, 2, 0, 0, 0, 3])
 
