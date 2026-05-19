@@ -22,6 +22,16 @@ class DiffusionTensorTest(unittest.TestCase):
         np.testing.assert_allclose(np.abs(vectors[1]), [0, 0, 1])
         np.testing.assert_allclose(np.abs(vectors[2]), [1, 0, 0])
 
+    def test_repeated_eigenvalues_keep_eigenvector_order(self):
+        dt = DiffusionTensor([[1, 0, 0], [0, 2, 0], [0, 0, 2]])
+
+        vectors = [np.array(tuple(vector)) for vector in (dt.E1, dt.E2, dt.E3)]
+
+        self.assertEqual(tuple(dt.EigenValues), (2, 2, 1))
+        np.testing.assert_allclose(np.abs(vectors[0]), [0, 1, 0])
+        np.testing.assert_allclose(np.abs(vectors[1]), [0, 0, 1])
+        np.testing.assert_allclose(np.abs(vectors[2]), [1, 0, 0])
+
     def test_scalar_diffusion_metrics(self):
         dt = DiffusionTensor([[3, 0, 0], [0, 2, 0], [0, 0, 1]])
 
