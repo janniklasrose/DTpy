@@ -1,0 +1,13 @@
+https://ww5.aievolution.com/ism2001/index.cfm?do=ev.viewEv&ev=2787
+(Open-Source Pulse Sequence Programming - Tony Stoecker)
+
+https://github.com/magland/sequencetree4
+https://gamma-star.mevis.fraunhofer.de/
+https://gamma-star.mevis.fraunhofer.de/SE_EPI_diffusion_sequence_readonly.html#/
+https://ksfoundationepic.org/
+https://toppemri.github.io/
+http://jemris.org/
+http://jemris.org/ug_uis.html
+
+https://github.com/AlexeiSheplyakov/GiNaC
+https://www.ginac.de/

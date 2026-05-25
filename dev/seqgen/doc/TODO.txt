@@ -1,0 +1,3 @@
+NOTE on gradient strength:
+- the gradients can be applied along two directions simultaneously
+- here we assume that we use two at the same time and the directions are not normalized (i.e. [1, 1, 0])
