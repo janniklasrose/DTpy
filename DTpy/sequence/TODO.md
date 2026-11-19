@@ -1,0 +1,1 @@
+- use Vector3 instead of scalar value for gradients
