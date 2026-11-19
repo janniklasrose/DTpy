@@ -1,8 +1,5 @@
 # iT  :  state, starts at zero so that first call to .next() initialises to 1
 
-
-
-
 class DiscreteSequence():
 
     def __init(self, NT):

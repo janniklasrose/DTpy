@@ -5,8 +5,8 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .diffusion_tensor import DiffusionTensor
+from .directions import Direction
 from .mathematics import Tensor3, Vector3
-from .sequence import Direction
 from .spin import Spin
 
 
